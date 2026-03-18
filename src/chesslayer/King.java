@@ -137,14 +137,18 @@ public class King extends ChessPiece {
 			}
 		}
 	}
-
+	
 	private void scanForAttackedSquares() {
 		for (int i = 0; i < getBoard().getColumns(); i++) {
 			for (int j = 0; j < getBoard().getRows(); j++) {
 				if (getBoard().piece(i, j) != null && getBoard().piece(i, j).getColor() != this.getColor()
 						&& getBoard().piece(i, j).toString() != "K" && getBoard().piece(i, j).toString() != "P") {
 					mergeAttackedSquares(getBoard().piece(i, j).possibleMoves());
-
+					
+				}
+				//ADD LOGIC TO MERGE SQUARES AROUND THE OTHER KING
+				if(getBoard().piece(i,j).toString()=="K"&&getBoard().piece(i, j).getColor() != this.getColor()) {
+					
 				}
 			}
 		}
