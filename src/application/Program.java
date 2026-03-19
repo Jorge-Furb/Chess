@@ -1,11 +1,10 @@
 package application;
 
-import java.util.Scanner;
-import java.util.Set;
-
 import chesslayer.ChessMatch;
 import chesslayer.ChessMove;
 import chesslayer.ChessPosition;
+import java.util.Scanner;
+import java.util.Set;
 
 public class Program {
 
@@ -41,7 +40,7 @@ public class Program {
 				UI.printBoard(chessMatch.getPieces(), emptyTiles);
 			}
 			switch(optionInputType) {
-			//Everything that was implemented works, so its 100% functional chess game, this is the list of missing features:
+			//This is the list of missing features:
 			//Clock
 			//List containing the log of the chess match ( i'm thinking of position and clock time at the move)
 			//UI display the captured pieces
@@ -57,7 +56,7 @@ public class Program {
 			String chessMoveScan = sc.nextLine();
 			while(!checkShortInput(chessMoveScan)) {
 				System.out.println("Invalid input");
-				//chessMoveScan = sc.nextLine();
+				chessMoveScan = sc.nextLine();
 			}
 			ChessMove chessMove = new ChessMove (chessMoveScan,chessMatch);
 			ChessPosition[] move = chessMove.extractChessPosition();
@@ -67,6 +66,7 @@ public class Program {
 				ChessPosition targetPosition = move[1];
 				chessMatch.performChessMove(sourcePosition, targetPosition);
 			}
+			//Arrumar mensagem de invalid chess move, nao esta 
 			else {
 				System.out.println("Invaid chess move");
 			}

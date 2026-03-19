@@ -5,7 +5,7 @@ import boardlayer.Position;
 
 public class King extends ChessPiece {
 	private ChessMatch chessMatch;
-	private boolean[][] aSquares = new boolean[getBoard().getColumns()][getBoard().getRows()];
+	private boolean[][] aSquares = new boolean[getBoard().getColumns()][getBoard().getRows()]; // Attacked/protected squares to be excluded from pMov
 
 	public King(Board board, Color color, ChessMatch chessMatch) {
 		super(board, color);
@@ -20,6 +20,7 @@ public class King extends ChessPiece {
 
 	@Override
 	public boolean[][] possibleMoves() {
+		resetASquares();
 		boolean[][] pMov = new boolean[getBoard().getColumns()][getBoard().getRows()];
 		// Loads all the squares being protected by the enemy piece, except for the
 		// pawns(they have special treatment)
@@ -75,6 +76,14 @@ public class King extends ChessPiece {
 
 		pMov = filterLegalMoves(pMov);
 		return pMov;
+	}
+
+	private void resetASquares() {
+		for(int i =0 ;i< this.aSquares.length;i++){
+			for(int j = 0 ; j < this.aSquares.length; j++){
+				this.aSquares[i][j]=false;
+			}
+		}
 	}
 
 	private boolean isAPawnGuardingThisSquare(int column, int row) {
@@ -146,9 +155,19 @@ public class King extends ChessPiece {
 					mergeAttackedSquares(getBoard().piece(i, j).possibleMoves());
 					
 				}
-				//ADD LOGIC TO MERGE SQUARES AROUND THE OTHER KING
-				if(getBoard().piece(i,j).toString()=="K"&&getBoard().piece(i, j).getColor() != this.getColor()) {
-					
+				//TEST LOGIC PROTECTED SQUARES BY THE OTHER KING
+				if(getBoard().piece(i,j)!=null&& getBoard().piece(i,j).toString()=="K"&&getBoard().piece(i, j).getColor() != this.getColor()) {
+					int[][] directions = { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 }, { 1, 1 }, { -1, 1 }, { 1, -1 }, { -1, -1 } };
+					for (int[] direction : directions) {
+
+						int dCollumn = direction[0];
+						int dRow = direction[1];
+						int collumn = i + dCollumn;
+						int row = j + dRow;
+						if(getBoard().positionExists(collumn,row)){
+							this.aSquares[collumn][row]=true;
+						}
+					}
 				}
 			}
 		}
