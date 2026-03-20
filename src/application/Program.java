@@ -27,7 +27,7 @@ public class Program {
 		}
 		sc.nextLine();
 		while (!chessMatch.isCheckMate()) {
-			UI.cleanScrean();
+			UI.cleanScreen();
 			chessMatch.isCheck();
 			greenTiles = chessMatch.movablePieces();
 			if(chessMatch.isCheckMate()){

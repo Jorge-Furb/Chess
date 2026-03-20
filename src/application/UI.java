@@ -21,7 +21,7 @@ public class UI {
 	
 	// Peças vão de 0 a 7 para Colunas I e Linhas J, ao printar A 8, vamos ter linha j=7 e coluna i=0 com chessBoardPosition[0][7] = torre preta
 	
-	public static void cleanScrean() {
+	public static void cleanScreen() {
 		System.out.println("\033[H\033[2J");
 		System.out.flush();
 	}
