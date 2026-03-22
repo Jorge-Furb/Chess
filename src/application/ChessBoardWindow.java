@@ -174,32 +174,6 @@ public class ChessBoardWindow {
     }
     // New printPiece function
     public void printPiece(String piece) {
-        // Convert piece string to uppercase for comparison
-        String pieceUpper = piece.trim().toUpperCase();
-
-        // Print piece symbol based on piece type
-        switch (pieceUpper) {
-            case "P":
-                System.out.print("♙ "); // Pawn
-                break;
-            case "R":
-                System.out.print("♖ "); // Rook
-                break;
-            case "B":
-                System.out.print("♗ "); // Bishop
-                break;
-            case "H":
-                System.out.print("♘ "); // Knight
-                break;
-            case "Q":
-                System.out.print("♕ "); // Queen
-                break;
-            case "K":
-                System.out.print("♔ "); // King
-                break;
-            default:
-                System.out.print("  "); // Empty square or invalid piece
-                break;
-        }
+       // TODO - print chesspieces on the board
     }
 }
