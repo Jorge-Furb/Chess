@@ -5,26 +5,39 @@ import chesslayer.ChessMove;
 import chesslayer.ChessPosition;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class Program {
 
 	public static void main(String[] args) {
-
+		
 		Scanner sc = new Scanner(System.in);
 		ChessMatch chessMatch = new ChessMatch();
+		ChessBoardWindow cb = new ChessBoardWindow();
 		boolean greenTiles[][] = new boolean[chessMatch.getBoard().getColumns()][chessMatch.getBoard().getRows()];
 		UI.printBoard(chessMatch.getPieces(), greenTiles);
 		boolean[][] emptyTiles = new boolean [chessMatch.getBoard().getColumns()][chessMatch.getBoard().getRows()];
 		System.out.println("Do you want to have the possible movable pieces highlighted?y/n");
 		char optionHighlitedPieces = sc.next().charAt(0);
-		System.out.println("Do you want the short or long notation?(s/any other key) short : pe4, long: e2<Enter>e4");
-		char optionInputType = sc.next().charAt(0);
+		System.out.println("Do you want to play with the GUI mode? y for Yes or else for terminal UI version");
+		char guiOption = sc.next().charAt(0);
+		char optionInputType;
+		if(guiOption!='y'){
+			System.out.println("Do you want the short or long notation?(s/any other key) short : pe4, long: e2<Enter>e4");
+			optionInputType = sc.next().charAt(0);
 		if(optionInputType=='s') {
-			System.out.println("You've choose the short notation");
+				System.out.println("You've choose the short notation");
+			}
+			else {
+				System.out.println("Default long notation");
+			}
 		}
-		else {
-			System.out.println("Default long notation");
+		else{
+			optionInputType = 'w';
+			cb.buildWindow();
+			cb.scanBoardPieces(chessMatch.getPieces());
 		}
+			
 		sc.nextLine();
 		while (!chessMatch.isCheckMate()) {
 			UI.cleanScreen();
@@ -72,8 +85,33 @@ public class Program {
 			}
 			break;
 			//----------------------------------------------------------
-			 
-			 
+			//  Codigo do GUI
+			case 'w':
+					
+					try {
+						cb.setGreenTiles(greenTiles);
+						String chessSourcePositionMouseClick = cb.waitForClick();
+						char collum = chessSourcePositionMouseClick.charAt(0);
+						int row = Integer.parseInt(chessSourcePositionMouseClick.substring(1));
+						ChessPosition sourcePosition = new ChessPosition(collum,row);
+						greenTiles = chessMatch.matchPossibleMoves(sourcePosition);
+						cb.setGreenTiles(greenTiles);
+						String chessDestinyPositionMouseClick = cb.waitForClick();
+						collum = chessDestinyPositionMouseClick.charAt(0);
+						row = Integer.parseInt(chessDestinyPositionMouseClick.substring(1));
+						ChessPosition targetPosition = new ChessPosition(collum,row);
+						chessMatch.performChessMove(sourcePosition,targetPosition);
+
+						
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+			break;
 			
 			// Codigo notaçao algebrica longa (ex: enter e2 then enter e4) Working
 			//------------------------------------------------
@@ -172,3 +210,4 @@ public class Program {
 		}
 	}
 }
+
